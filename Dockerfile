@@ -1,7 +1,17 @@
-FROM postgres:15
+FROM postgres:16
 
-# Copy SQL seed file into the Postgres init directory
-# Postgres will run any *.sql files found in /docker-entrypoint-initdb.d/ when the database is initialized.
-COPY app/sql/seed.sql /docker-entrypoint-initdb.d/seed.sql
+# -----------------------------------------------------------------------------
+# Labels
+# -----------------------------------------------------------------------------
+LABEL maintainer="fuse-wk2"
+LABEL description="PostgreSQL 16 image pre-seeded with app/sql/seed.sql"
+
+# -----------------------------------------------------------------------------
+# Seed data
+# Postgres automatically executes *.sql files placed in this directory
+# the very first time the container starts (i.e., when the data volume is empty).
+# Files are run in alphabetical order, so prefix with numbers if ordering matters.
+# -----------------------------------------------------------------------------
+COPY app/sql/seed.sql /docker-entrypoint-initdb.d/01_seed.sql
 
 EXPOSE 5432

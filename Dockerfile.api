@@ -1,0 +1,41 @@
+# =============================================================================
+# Dockerfile.api  —  FastAPI application image
+# =============================================================================
+# Stage 1: Use a slim Python 3.11 base
+FROM python:3.11-slim
+
+# Labels
+LABEL maintainer="fuse-wk2"
+LABEL description="FastAPI Customer API for Classic Models"
+
+# Set working directory
+WORKDIR /app
+
+# -----------------------------------------------------------------------------
+# Install dependencies first (Docker layer-cache friendly)
+# Install only the packages needed by the FastAPI app
+# -----------------------------------------------------------------------------
+RUN pip install --no-cache-dir \
+    fastapi>=0.136.1 \
+    uvicorn>=0.46.0 \
+    sqlalchemy>=2.0.49 \
+    psycopg2-binary>=2.9.12 \
+    pydantic>=2.13.4 \
+    pydantic-settings>=2.14.1 \
+    python-dotenv>=1.2.2
+
+# -----------------------------------------------------------------------------
+# Copy application source
+# -----------------------------------------------------------------------------
+COPY main.py ./
+COPY app/    ./app/
+
+# -----------------------------------------------------------------------------
+# Expose the API port
+# -----------------------------------------------------------------------------
+EXPOSE 8000
+
+# -----------------------------------------------------------------------------
+# Run with uvicorn (4 workers; tune to your CPU count in production)
+# -----------------------------------------------------------------------------
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
