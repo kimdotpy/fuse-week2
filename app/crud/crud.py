@@ -13,7 +13,16 @@ Rules for this module
 from sqlalchemy.orm import Session, joinedload
 
 from app.logger import get_logger
-from app.models.models import Customer
+from app.models.models import (
+    Customer,
+    Order,
+    Product,
+    Employee,
+    Office,
+    Payment,
+    OrderDetail,
+    ProductLine,
+)
 from app.schemas.schemas import CustomerCreate, CustomerUpdate
 
 logger = get_logger(__name__)
@@ -202,3 +211,168 @@ def delete_customer(db: Session, customer_number: int) -> bool:
         db.rollback()
         logger.error("DELETE customer | FAILED customerNumber=%d: %s", customer_number, exc)
         raise
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# COUNT FUNCTIONS — Table row counts for dashboard
+# ══════════════════════════════════════════════════════════════════════════════
+
+
+def count_customers(db: Session) -> int:
+    """
+    Return total number of customers in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of customers (0 if table is empty).
+    """
+    logger.info("COUNT | Starting customers count query")
+    try:
+        count = db.query(Customer).count()
+        logger.info("COUNT | customers: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | customers FAILED: %s", exc)
+        return 0
+
+
+def count_orders(db: Session) -> int:
+    """
+    Return total number of orders in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of orders (0 if table is empty).
+    """
+    logger.info("COUNT | Starting orders count query")
+    try:
+        count = db.query(Order).count()
+        logger.info("COUNT | orders: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | orders FAILED: %s", exc)
+        return 0
+
+
+def count_products(db: Session) -> int:
+    """
+    Return total number of products in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of products (0 if table is empty).
+    """
+    logger.info("COUNT | Starting products count query")
+    try:
+        count = db.query(Product).count()
+        logger.info("COUNT | products: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | products FAILED: %s", exc)
+        return 0
+
+
+def count_employees(db: Session) -> int:
+    """
+    Return total number of employees in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of employees (0 if table is empty).
+    """
+    logger.info("COUNT | Starting employees count query")
+    try:
+        count = db.query(Employee).count()
+        logger.info("COUNT | employees: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | employees FAILED: %s", exc)
+        return 0
+
+
+def count_offices(db: Session) -> int:
+    """
+    Return total number of offices in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of offices (0 if table is empty).
+    """
+    logger.info("COUNT | Starting offices count query")
+    try:
+        count = db.query(Office).count()
+        logger.info("COUNT | offices: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | offices FAILED: %s", exc)
+        return 0
+
+
+def count_payments(db: Session) -> int:
+    """
+    Return total number of payments in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of payments (0 if table is empty).
+    """
+    logger.info("COUNT | Starting payments count query")
+    try:
+        count = db.query(Payment).count()
+        logger.info("COUNT | payments: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | payments FAILED: %s", exc)
+        return 0
+
+
+def count_orderdetails(db: Session) -> int:
+    """
+    Return total number of order details in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of order details (0 if table is empty).
+    """
+    logger.info("COUNT | Starting orderdetails count query")
+    try:
+        count = db.query(OrderDetail).count()
+        logger.info("COUNT | orderdetails: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | orderdetails FAILED: %s", exc)
+        return 0
+
+
+def count_productlines(db: Session) -> int:
+    """
+    Return total number of product lines in the database.
+
+    Args:
+        db: Active SQLAlchemy session.
+
+    Returns:
+        Total count of product lines (0 if table is empty).
+    """
+    logger.info("COUNT | Starting productlines count query")
+    try:
+        count = db.query(ProductLine).count()
+        logger.info("COUNT | productlines: %d", count)
+        return count
+    except Exception as exc:
+        logger.error("COUNT | productlines FAILED: %s", exc)
+        return 0
