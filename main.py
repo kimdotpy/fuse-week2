@@ -48,7 +48,7 @@ app = FastAPI(
     ),
     version="1.0.0",
     lifespan=lifespan,
-    swagger_ui_parameters={"syntaxHighlight.theme": "monokai", "tryItOutEnabled": False},
+    swagger_ui_parameters={"tryItOutEnabled": True},#cant use "supportedSubmitMethods": []since tryitout button seems to be prerequisit for execute, turning it on every time is hassle so ill just turn it on permanently 
 )
 
 # ── Register routers ──────────────────────────────────────────────────────────
